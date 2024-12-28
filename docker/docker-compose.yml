@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  app:
+    image: demo
+    build:
+      dockerfile: ./docker/develop.Dockerfile
+      context: ../
+    ports:
+      - "8080:8080"
