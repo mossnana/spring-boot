@@ -1,14 +1,13 @@
 package com.mossnana.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.mossnana.account.enums.MetaCode;
-import com.mossnana.account.exception.InvalidFormatEmail;
-
 import jakarta.validation.Valid;
+import java.util.HashMap;
 
 @RestController
 public class AccountController {
@@ -19,21 +18,17 @@ public class AccountController {
   }
 
   @PostMapping("/")
-  public EntityResponse<Account> createAccount(@Valid @RequestBody CreateAccountDto body) {
-    EntityResponse<Account> response = new EntityResponse<>();
+  public ResponseEntity<HashMap<String, Object>> createAccount(@Valid @RequestBody CreateAccountDto body) {
     try {
       Account account = this.accountService.createAccount(body);
-      response.setData(account);
-      response.setMeta(MetaCode.OK);
-      return response;
-    } catch (InvalidFormatEmail e) {
-      response.setError(e.toString());
-      response.setMeta(MetaCode.OK);
-      return response;
+      HashMap<String, Object> response = new HashMap<>();
+      response.put("id", account.getId());
+      response.put("name", account.getName());
+      response.put("email", account.getEmail());
+      response.put("accountStatus", account.getAccountStatus());
+      return new ResponseEntity<>(response, HttpStatus.OK);
     } catch (Exception e) {
-      response.setMeta(MetaCode.UNKNOWN);
-      response.setError(e.toString());
-      return response;
+      return  new ResponseEntity<>(new HashMap<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

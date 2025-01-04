@@ -10,6 +10,10 @@ public class CreateAccountException extends Exception {
     exceptions.add(exception);
   }
 
+  public void setError(Error error) {
+    exceptions.add(new Exception(error));
+  }
+
   public boolean isThrowException() {
     return !exceptions.isEmpty();
   }

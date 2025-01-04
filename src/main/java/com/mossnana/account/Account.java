@@ -1,13 +1,7 @@
 package com.mossnana.account;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import com.mossnana.account.constant.AccountStatus;
+import jakarta.persistence.*;
 
 @Entity
 public class Account {
@@ -19,29 +13,18 @@ public class Account {
 
   private String email;
 
-  @ManyToMany(mappedBy="accounts")
-  private final Set<Customer> customers = new HashSet<>();
+  private AccountStatus accountStatus;
 
-  public void setCustomer(Customer customer) {
-    customers.add(customer);
-  }
-
-  public Set<Customer> getCustomers() {
-    return customers;
-  }
+  private String userId;
 
   public Integer getId() {
     return id;
   }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
+  public void setId(Integer id) { this.id = id; }
 
   public String getName() {
     return name;
   }
-
   public void setName(String name) {
     this.name = name;
   }
@@ -49,8 +32,23 @@ public class Account {
   public String getEmail() {
     return email;
   }
-
   public void setEmail(String email) {
     this.email = email;
   }
+
+  public boolean isConfirm() {
+    return accountStatus == AccountStatus.PENDING;
+  }
+  public AccountStatus getAccountStatus() { return accountStatus; }
+  public void setAccountStatus(AccountStatus status) {
+    accountStatus = status;
+  }
+
+  public String getUserId() { return userId; };
+  public void setUserId(String userId) {
+    if (this.userId == null) {
+      this.userId = userId;
+    }
+  }
+
 }

@@ -1,0 +1,4 @@
+[submodule "exception"]
+	path = src/main/java/com/mossnana/exception
+	url = https://github.com/mossnana/mossbank.git
+	branch = exception/main

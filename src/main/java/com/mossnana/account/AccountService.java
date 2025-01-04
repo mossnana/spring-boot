@@ -1,44 +1,29 @@
 package com.mossnana.account;
 
+import com.mossnana.account.constant.AccountStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mossnana.account.exception.CreateAccountException;
-import com.mossnana.account.exception.InvalidFormatEmail;
-
 import jakarta.transaction.Transactional;
 
 @Service
 public class AccountService {
   private final AccountRepository accountRepository;
-  private final CustomerRepository customerRepository;
 
-  public AccountService(@Autowired AccountRepository accountRepository, @Autowired CustomerRepository customerRepository) {
+  public AccountService(@Autowired AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
-    this.customerRepository = customerRepository;
   }
 
   @Transactional
-  public Account createAccount(CreateAccountDto dao) throws InvalidFormatEmail {
-    CreateAccountException createAccountException = new CreateAccountException();
-    Customer customer = new Customer();
-    customer.setName(dao.firstName, "", dao.lastName);
-
-    try {
-      customer.setEmail(dao.email);
-    } catch (InvalidFormatEmail e) {
-      createAccountException.setException(e);
-      throw e;
-    }
-
+  public Account createAccount(CreateAccountDto dto) {
     Account firstAccount = new Account();
-    firstAccount.setEmail(customer.getEmail());
-    firstAccount.setName(customer.getName());
+    firstAccount.setEmail(dto.email);
+    firstAccount.setName(dto.getName());
+    firstAccount.setUserId(dto.userId);
+    firstAccount.setAccountStatus(AccountStatus.PENDING);
 
-    customer = customerRepository.save(customer);
-    firstAccount.setCustomer(customer);
     firstAccount = accountRepository.save(firstAccount);
-    
+
     return firstAccount;
   }
+
 }

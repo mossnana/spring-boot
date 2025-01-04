@@ -1,23 +1,21 @@
 package com.mossnana.account;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 
 public class CreateAccountDto {
   @NotEmpty
   public String firstName;
 
-  public String middleName;
-
   @NotEmpty
   public String lastName;
+
+  @NotEmpty
+  public String userId;
 
   @Email
   public String email;
 
-  private Integer userId;
-
-  public void setUserId(Integer userId) {
-    this.userId = userId;
+  public String getName() {
+    return "%s %s".formatted(this.firstName, this.lastName);
   }
 }
