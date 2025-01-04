@@ -1,12 +1,12 @@
 package com.mossnana.account;
 
+import com.mossnana.account.exception.CreateAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mossnana.account.enums.MetaCode;
-import com.mossnana.account.exception.InvalidFormatEmail;
 
 import jakarta.validation.Valid;
 
@@ -23,10 +23,11 @@ public class AccountController {
     EntityResponse<Account> response = new EntityResponse<>();
     try {
       Account account = this.accountService.createAccount(body);
+      account = this.accountService.getAccountById(account.getId());
       response.setData(account);
       response.setMeta(MetaCode.OK);
       return response;
-    } catch (InvalidFormatEmail e) {
+    } catch (CreateAccountException e) {
       response.setError(e.toString());
       response.setMeta(MetaCode.OK);
       return response;

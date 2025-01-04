@@ -1,13 +1,8 @@
 package com.mossnana.account;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
 
 @Entity
 public class Account {
@@ -18,17 +13,6 @@ public class Account {
   private String name;
 
   private String email;
-
-  @ManyToMany(mappedBy="accounts")
-  private final Set<Customer> customers = new HashSet<>();
-
-  public void setCustomer(Customer customer) {
-    customers.add(customer);
-  }
-
-  public Set<Customer> getCustomers() {
-    return customers;
-  }
 
   public Integer getId() {
     return id;
